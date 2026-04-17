@@ -66,6 +66,7 @@ export default [
     rules: {
       ...pluginImport.flatConfigs.recommended.rules,
       ...pluginImport.flatConfigs.typescript.rules,
+      "import/no-unresolved": ["error", { ignore: ["^astro:"] }],
       "import/consistent-type-specifier-style": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
