@@ -1,0 +1,47 @@
+{
+  "name": "knowledge",
+  "type": "module",
+  "scripts": {
+    "astro": "astro",
+    "dev": "astro dev",
+    "start": "astro preview",
+    "build": "astro build",
+    "preview": "astro preview",
+    "lint": "astro check && tsc --noEmit && eslint --fix && prettier --write .",
+    "lint:check": "astro check && tsc --noEmit && eslint",
+    "fmt": "prettier --write .",
+    "fmt:check": "prettier --check .",
+    "check": "astro check && tsc --noEmit && eslint && prettier --check .",
+    "generate-types": "wrangler types"
+  },
+  "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319",
+  "dependencies": {
+    "@astrojs/cloudflare": "^13.1.9",
+    "@astrojs/react": "^5.0.0",
+    "astro": "^6.0.0",
+    "better-auth": "^1.6.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@eslint/js": "^9.9.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
+    "eslint-import-resolver-typescript": "^4.0.0",
+    "eslint-plugin-astro": "^1.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "lefthook": "^2.0.15",
+    "prettier": "^3.0.2",
+    "prettier-plugin-astro": "^0.14.0",
+    "typescript": "^6.0.0",
+    "typescript-eslint": "^8.3.0",
+    "wrangler": "^4.82.2"
+  }
+}
