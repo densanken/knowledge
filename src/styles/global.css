@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+html {
+  @apply font-sans;
+}
+
+code {
+  @apply font-mono;
+}
