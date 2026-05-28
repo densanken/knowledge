@@ -18,10 +18,12 @@
   "dependencies": {
     "@astrojs/cloudflare": "^13.1.9",
     "@astrojs/react": "^5.0.0",
+    "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.0.0",
     "better-auth": "^1.6.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
