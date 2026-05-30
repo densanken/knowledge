@@ -7,7 +7,7 @@ type AuthSessionData = NonNullable<Awaited<ReturnType<typeof auth.api.getSession
 export type PublicAuthUser = {
   id: string;
   name: string;
-  userName: string | null;
+  username: string | null;
   imageUrl: string | null;
   provider: string | null;
   providerId: string | null;
@@ -34,7 +34,7 @@ const toPublicUser = (sessionData: AuthSessionData): PublicAuthUser => {
   return {
     id: sessionData.user.id,
     name: sessionData.user.name,
-    userName: providerUsername ?? null,
+    username: providerUsername ?? null,
     imageUrl: imageUrl ?? null,
     provider: provider ?? null,
     providerId: providerAccountId ?? null,
