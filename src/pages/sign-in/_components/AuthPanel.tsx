@@ -30,6 +30,8 @@ export const AuthPanel = ({ authError }: Props) => {
       if (error) window.location.replace("/api/auth/error?error=redirect_failed");
     } catch {
       window.location.replace("/api/auth/error?error=redirect_failed");
+    } finally {
+      startedRef.current = false;
     }
   }, []);
 

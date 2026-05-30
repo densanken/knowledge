@@ -3,8 +3,10 @@ import { AuthPanel } from "./_components/AuthPanel";
 import Layout from "../../layouts/Layout.astro";
 
 export const prerender = false;
+
+const authError = Astro.url.searchParams.get("error");
 ---
 
 <Layout class="flex items-center justify-around" title="Sign out">
-  <AuthPanel client:load />
+  <AuthPanel authError={authError} client:load />
 </Layout>
