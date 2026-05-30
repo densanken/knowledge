@@ -23,7 +23,7 @@ export const AuthPanel = ({ authError }: Props) => {
         return;
       }
 
-      window.location.assign("/sign-in?error=signed_out");
+      window.location.replace("/sign-in?error=signed_out");
     } catch {
       window.location.replace(signOutErrorPath);
     } finally {
@@ -48,11 +48,10 @@ export const AuthPanel = ({ authError }: Props) => {
       )}
       <div className="mt-4 flex gap-4">
         <a
-          className="inline-block rounded-lg bg-gray-200 px-6 py-3 text-center text-lg font-medium text-gray-700"
+          className="flex items-center rounded-lg bg-gray-200 px-6 py-3 text-center text-lg font-medium text-gray-700"
           href="/"
         >
           ホームに戻る
-          <span className="mt-0.5 block text-xs font-normal">サインアウトはしません</span>
         </a>
         <button
           className="inline-block rounded-lg bg-red-500 px-6 py-3 text-center text-lg font-medium text-white"
