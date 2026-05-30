@@ -7,3 +7,7 @@ html {
 code {
   @apply font-mono;
 }
+
+button {
+  @apply cursor-pointer;
+}
