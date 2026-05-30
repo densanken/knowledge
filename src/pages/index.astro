@@ -4,7 +4,7 @@ import { getServerAuthState } from "../lib/auth-session";
 
 export const prerender = false;
 
-const authState = await getServerAuthState(Astro.request.headers);
+const authState = await getServerAuthState(Astro.request.headers, Astro.response.headers);
 ---
 
 <Layout
@@ -27,7 +27,13 @@ const authState = await getServerAuthState(Astro.request.headers);
             <p class="mb-2 text-xs font-extrabold text-blue-600 uppercase">Signed in as</p>
             <div class="flex items-center gap-3">
               {authState.user.imageUrl && (
-                <img alt="" class="flex-none rounded-lg" height="48" src={authState.user.imageUrl} width="48" />
+                <img
+                  alt={authState.user.name ? `${authState.user.name}のアイコン` : "ユーザーのアイコン"}
+                  class="flex-none rounded-lg"
+                  height="48"
+                  src={authState.user.imageUrl}
+                  width="48"
+                />
               )}
               <p>{authState.user.name}</p>
             </div>

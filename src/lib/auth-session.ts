@@ -49,15 +49,13 @@ const getSetCookieHeaders = (headers: Headers) => {
   return setCookie ? splitSetCookieHeader(setCookie) : [];
 };
 
-const appendSetCookieHeaders = (source: Headers, target: Headers | undefined) => {
-  if (!target) return;
-
+const appendSetCookieHeaders = (source: Headers, target: Headers) => {
   for (const setCookie of getSetCookieHeaders(source)) {
     target.append("set-cookie", setCookie);
   }
 };
 
-export const getServerAuthState = async (headers: Headers, responseHeaders?: Headers): Promise<ServerAuthState> => {
+export const getServerAuthState = async (headers: Headers, responseHeaders: Headers): Promise<ServerAuthState> => {
   const sessionResult = await auth.api.getSession({ headers, returnHeaders: true });
   appendSetCookieHeaders(sessionResult.headers, responseHeaders);
 
