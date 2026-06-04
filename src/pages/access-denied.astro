@@ -1,0 +1,55 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getServerAuthState } from "../lib/auth-session";
+
+export const prerender = false;
+
+const authState = await getServerAuthState(Astro.request.headers, Astro.response.headers);
+
+const reason = Astro.url.searchParams.get("reason");
+
+const message =
+  reason === "not_guild_member"
+    ? "あなたが CCS Discord サーバーのメンバーであることを確認できませんでした。"
+    : reason === "misconfigured"
+      ? "内部設定エラーによりアクセス確認を完了できませんでした。"
+      : reason === "discord_api_error"
+        ? "Discord へのアクセス確認に失敗しました。"
+        : "アクセス確認に失敗しました。時間をおいて再試行してください。";
+
+const subMessage =
+  reason === "not_guild_member"
+    ? "Discord サーバーに参加しているアカウントでサインインしてください。"
+    : reason === "misconfigured"
+      ? "管理者にお問い合わせください。"
+      : reason === "discord_api_error"
+        ? "時間をおいて再試行してください。"
+        : "何度もこのエラーが発生する場合は、管理者にお問い合わせください。";
+---
+
+<Layout class="flex items-center justify-around px-5" title="Access denied">
+  <div class="w-full max-w-2xl rounded-lg bg-white p-6 text-center md:border md:border-neutral-300/60 md:shadow-md">
+    <p class="text-xs font-extrabold text-blue-600 uppercase">Access denied</p>
+    <h1 class="mt-2 text-2xl font-bold text-gray-900">閲覧できません</h1>
+    <div class="mt-3">
+      <p class="text-gray-700">{message}</p>
+      <p class="mt-1 text-gray-600">{subMessage}</p>
+    </div>
+
+    {authState.user && <p class="mt-4 text-gray-600">{authState.user.name} としてサインインしています</p>}
+    <div class="mt-3 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center">
+      <a
+        class="inline-flex items-center justify-center rounded-xl bg-gray-200 px-6 py-3 font-bold text-gray-700"
+        href="/"
+      >
+        ホームに戻る
+      </a>
+      <a
+        class="inline-flex items-center justify-center rounded-xl bg-red-500 px-6 py-3 font-bold text-white"
+        href="/sign-out"
+      >
+        Sign out
+      </a>
+    </div>
+  </div>
+</Layout>
