@@ -108,7 +108,7 @@ export const getServerAuthState = async (headers: Headers, responseHeaders: Head
     };
   }
 
-  if (user.guildCheckStatus === "not_member" || user.guildAllowed === false) {
+  if (user.guildCheckStatus === "not_member" || user.guildAllowed !== true) {
     return {
       status: "forbidden",
       reason: "not_guild_member",
