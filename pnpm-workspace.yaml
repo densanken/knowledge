@@ -1,5 +1,6 @@
-onlyBuiltDependencies:
-  - esbuild
-  - lefthook
-  - sharp
-  - unrs-resolver
+allowBuilds:
+  esbuild: false
+  lefthook: true
+  sharp: false
+  unrs-resolver: false
+  workerd: true
