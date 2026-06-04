@@ -69,23 +69,18 @@ const getGuildCheckStatus = (value: unknown): DiscordOAuthProfile["guildCheckSta
   return "api_error";
 };
 
-const toDiscordOAuthProfileFromRecord = (
-  value: Record<string, unknown>,
-  { requireIdentity }: { requireIdentity: boolean }
-): DiscordOAuthProfile | null => {
+const toDiscordOAuthProfileFromRecord = (value: Record<string, unknown>): DiscordOAuthProfile | null => {
   const id = getString(value, "id");
   const username = getString(value, "username");
-  if (requireIdentity && (!id || !username)) return null;
+  if (!id || !username) return null;
 
   const globalName = getString(value, "global_name");
-  const fallbackId = id ?? "";
-  const fallbackUsername = username ?? "";
   const verified = getBoolean(value, "verified") ?? getBoolean(value, "emailVerified") ?? false;
 
   return {
-    id: fallbackId,
-    name: getString(value, "name") ?? globalName ?? fallbackUsername,
-    username: fallbackUsername,
+    id,
+    name: getString(value, "name") ?? globalName ?? username,
+    username,
     global_name: globalName,
     avatar: getString(value, "avatar"),
     image_url: getString(value, "image_url") ?? "",
@@ -94,8 +89,8 @@ const toDiscordOAuthProfileFromRecord = (
     verified,
     emailVerified: verified,
     provider: "discord",
-    providerAccountId: getString(value, "providerAccountId") ?? fallbackId,
-    providerUsername: getString(value, "providerUsername") ?? fallbackUsername,
+    providerAccountId: getString(value, "providerAccountId") ?? id,
+    providerUsername: getString(value, "providerUsername") ?? username,
     guildAllowed: getBoolean(value, "guildAllowed") ?? false,
     guildCheckedAt: getNumber(value, "guildCheckedAt"),
     guildCheckStatus: getGuildCheckStatus(value.guildCheckStatus),
@@ -105,7 +100,7 @@ const toDiscordOAuthProfileFromRecord = (
 const toDiscordCurrentUser = (value: unknown): DiscordOAuthProfile | null => {
   if (!isRecord(value)) return null;
 
-  return toDiscordOAuthProfileFromRecord(value, { requireIdentity: true });
+  return toDiscordOAuthProfileFromRecord(value);
 };
 
 const getDiscordAvatarUrl = (profile: DiscordOAuthProfile) => {
@@ -174,10 +169,7 @@ const getDiscordOAuthUserInfo = async (
 };
 
 const getKnownDiscordOAuthUserInfo = (value: unknown): DiscordOAuthProfile => {
-  const profile = toDiscordOAuthProfileFromRecord(isRecord(value) ? value : {}, {
-    requireIdentity: false,
-  });
-
+  const profile = toDiscordOAuthProfileFromRecord(isRecord(value) ? value : {});
   if (profile) return profile;
 
   throw new Error("Discord OAuth profile could not be parsed.");
