@@ -15,7 +15,7 @@ type DiscordRateLimitResponse = {
 };
 
 const DISCORD_API_BASE_URL = "https://discord.com/api/v10";
-const discordSnowflakePattern = /^[0-9]{17,20}$/;
+const discordSnowflakePattern = /^[1-9]\d{16,18}$/;
 
 export const isDiscordSnowflake = (value: string): boolean => discordSnowflakePattern.test(value);
 

@@ -35,7 +35,7 @@ export default defineConfig({
         access: "secret",
         context: "server",
         min: 17,
-        max: 20,
+        max: 19,
       }),
     },
     validateSecrets: true,
