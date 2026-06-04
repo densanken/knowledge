@@ -5,8 +5,10 @@ import Layout from "../../layouts/Layout.astro";
 export const prerender = false;
 
 const authError = Astro.url.searchParams.get("error");
+const mode = Astro.url.searchParams.get("mode") === "recheck" ? "recheck" : "sign-in";
+const callbackURL = Astro.url.searchParams.get("callbackURL");
 ---
 
 <Layout class="flex items-center justify-around" title="Sign in">
-  <AuthPanel authError={authError} client:load />
+  <AuthPanel authError={authError} callbackURL={callbackURL} mode={mode} client:load />
 </Layout>

@@ -5,6 +5,14 @@ import { getServerAuthState } from "../lib/auth-session";
 export const prerender = false;
 
 const authState = await getServerAuthState(Astro.request.headers, Astro.response.headers);
+
+if (authState.status === "forbidden") return Astro.redirect("/access-denied?reason=not_guild_member", 302);
+if (authState.status === "auth_error") return Astro.redirect(`/access-denied?reason=${authState.reason}`, 302);
+if (authState.status === "needs_recheck")
+  return Astro.redirect(
+    `/sign-in?mode=recheck&callbackURL=${encodeURIComponent(`${Astro.url.pathname}${Astro.url.search}`)}`,
+    302
+  );
 ---
 
 <Layout
@@ -22,7 +30,7 @@ const authState = await getServerAuthState(Astro.request.headers, Astro.response
 
     <div class="rounded-lg bg-white lg:border lg:border-neutral-300/60 lg:px-10 lg:py-8 lg:shadow-md">
       {
-        authState.user ? (
+        authState.status === "allowed" ? (
           <>
             <p class="mb-2 text-xs font-extrabold text-blue-600 uppercase">Signed in as</p>
             <div class="flex items-center gap-3">

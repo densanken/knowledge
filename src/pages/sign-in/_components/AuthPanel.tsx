@@ -1,30 +1,41 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 import { authClient } from "../../../lib/auth-client";
 
 type Props = {
   authError: null | string;
+  callbackURL: null | string;
+  mode: "recheck" | "sign-in";
 };
 
 const authErrorMessages: Record<string, string> = {
   oauth_cancelled: "認証がキャンセルされました。",
   auth_session_expired: "認証セッションの有効期限が切れました。もう一度お試しください。",
   auth_failed: "認証に失敗しました。もう一度お試しください。",
+  guild_recheck_failed: "アクセス権の再確認に失敗しました。もう一度お試しください。",
   signed_out: "サインアウトしました。",
 } as const;
 
-export const AuthPanel = ({ authError }: Props) => {
+const getSafeCallbackURL = (callbackURL: null | string) => {
+  if (!callbackURL?.startsWith("/")) return "/";
+  if (callbackURL.startsWith("//")) return "/";
+
+  return callbackURL;
+};
+
+export const AuthPanel = ({ authError, callbackURL, mode }: Props) => {
   const startedRef = useRef(false);
+  const isRecheck = mode === "recheck";
 
   const signIn = useCallback(async () => {
     if (startedRef.current) return;
     startedRef.current = true;
 
     try {
-      const { error } = await authClient.signIn.social({
-        callbackURL: "/",
+      const { error } = await authClient.signIn.oauth2({
+        callbackURL: getSafeCallbackURL(callbackURL),
         errorCallbackURL: "/api/auth/error",
-        provider: "discord",
+        providerId: isRecheck ? "discord_recheck" : "discord",
       });
 
       if (error) window.location.replace("/api/auth/error?error=redirect_failed");
@@ -33,7 +44,7 @@ export const AuthPanel = ({ authError }: Props) => {
     } finally {
       startedRef.current = false;
     }
-  }, []);
+  }, [callbackURL, isRecheck]);
 
   useEffect(() => {
     if (authError) return;
@@ -43,14 +54,18 @@ export const AuthPanel = ({ authError }: Props) => {
 
   return (
     <div>
-      <h1 className="mb-4 text-center text-lg font-medium text-gray-700">Sign in - CCS Internal Docs</h1>
+      <h1 className="mb-4 text-center text-lg font-medium text-gray-700">
+        {isRecheck ? "Access check" : "Sign in"} - CCS Internal Docs
+      </h1>
       <div className="flex flex-col items-center">
         {authError ? (
           <div className="mb-6 rounded-lg bg-red-100 p-4 text-red-700 md:mb-0">
             {authErrorMessages[authError] ?? "認証処理でエラーが発生しました。"}
           </div>
         ) : (
-          <p className="text-center text-sm font-medium text-gray-700">Discord にリダイレクトしています...</p>
+          <p className="text-center text-sm font-medium text-gray-700">
+            {isRecheck ? "アクセス権を再確認しています..." : "Discord にリダイレクトしています..."}
+          </p>
         )}
         <div className="mt-4 flex flex-col-reverse gap-x-4 gap-y-2 md:flex-row">
           <a
@@ -64,7 +79,7 @@ export const AuthPanel = ({ authError }: Props) => {
             onClick={() => void signIn()}
             type="button"
           >
-            Sign in with Discord
+            {isRecheck ? "Recheck with Discord" : "Sign in with Discord"}
             <span className="mt-0.5 block text-xs font-normal">
               {authError
                 ? authError === "signed_out"
