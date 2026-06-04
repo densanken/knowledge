@@ -121,16 +121,28 @@ const fetchDiscordCurrentUser = async (
   accessToken: string,
   fetcher: typeof fetch
 ): Promise<DiscordOAuthProfile | null> => {
-  const response = await fetcher(`${DISCORD_API_BASE_URL}/users/@me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 10_000);
 
-  if (!response.ok) return null;
+  try {
+    const response = await fetcher(`${DISCORD_API_BASE_URL}/users/@me`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      signal: controller.signal,
+    });
 
-  const body: unknown = await response.json();
-  return toDiscordCurrentUser(body);
+    if (!response.ok) return null;
+
+    const body: unknown = await response.json();
+    return toDiscordCurrentUser(body);
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 };
 
 const toDiscordOAuthUserInfo = (

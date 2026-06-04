@@ -52,11 +52,17 @@ export const checkCurrentDiscordUserGuildMembership = async ({
   if (!accessToken) return { status: "misconfigured", reason: "missing_access_token" };
   if (!isDiscordSnowflake(allowedGuildId)) return { status: "misconfigured", reason: "invalid_guild_id" };
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 10_000);
+
   try {
     const response = await fetcher(`${DISCORD_API_BASE_URL}/users/@me/guilds/${allowedGuildId}/member`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
+      signal: controller.signal,
     });
 
     if (response.status === 200) return { status: "allowed" };
@@ -76,5 +82,7 @@ export const checkCurrentDiscordUserGuildMembership = async ({
     };
   } catch {
     return { status: "api_error" };
+  } finally {
+    clearTimeout(timeoutId);
   }
 };
