@@ -6,7 +6,7 @@ import { env } from "./env";
 
 const { BETTER_AUTH_SECRET, BETTER_AUTH_URL, DISCORD_ALLOWED_GUILD_ID, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } = env;
 
-export const AUTH_SESSION_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+export const AUTH_SESSION_MAX_AGE = 60 * 60 * 24 * 60; // 60 days
 
 export const auth = betterAuth({
   baseURL: BETTER_AUTH_URL,
