@@ -28,6 +28,7 @@ jobs:
         run: pnpm build
         env:
           BETTER_AUTH_URL: "http://localhost:4321"
-          BETTER_AUTH_SECRET: "s3qHhi1YX7TUQCGEPWKOVz0kJLzvS3w8puXxctKRJ8M="
+          BETTER_AUTH_SECRET: "s3qHhi1YX7TUQCGEPWKOVz0kJLzvS3w8puXxctKRJ8M=" # for testing, not a real secret
           DISCORD_CLIENT_ID: "000000000000000000"
-          DISCORD_CLIENT_SECRET: "HYP87cR2r12XFnNGfTKkaHzq3OqtnjIf"
+          DISCORD_CLIENT_SECRET: "HYP87cR2r12XFnNGfTKkaHzq3OqtnjIf" # for testing, not a real secret
+          DISCORD_ALLOWED_GUILD_ID: "000000000000000000"

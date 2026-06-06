@@ -18,6 +18,9 @@ const toPublicAuthError = (error: string | null) => {
 
     case "invalid_code": // authorization code の検証に失敗したとき
     case "oauth_code_verification_failed": // Generic OAuth で token exchange に失敗したとき
+    case "user_info_is_missing": // Generic OAuth で user info を取得できなかったとき
+    case "email_is_missing": // Generic OAuth の user info に email が含まれないとき
+    case "name_is_missing": // Generic OAuth の user info に name が含まれないとき
       return "auth_failed";
 
     case "issuer_mismatch": // OAuth/OIDC provider の issuer が期待値と一致しないとき

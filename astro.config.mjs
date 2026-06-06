@@ -31,6 +31,12 @@ export default defineConfig({
         context: "server",
         length: 32,
       }),
+      DISCORD_ALLOWED_GUILD_ID: envField.string({
+        access: "secret",
+        context: "server",
+        min: 17,
+        max: 19,
+      }),
     },
     validateSecrets: true,
   },
