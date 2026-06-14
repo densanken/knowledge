@@ -12,6 +12,7 @@
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "check": "astro check && tsc --noEmit && eslint && prettier --check .",
+    "test": "vitest run",
     "generate-types": "wrangler types",
     "postinstall": "lefthook install && pnpm run generate-types"
   },
@@ -46,6 +47,7 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.0",
     "typescript-eslint": "^8.3.0",
+    "vitest": "^4.1.8",
     "wrangler": "^4.82.2"
   }
 }
