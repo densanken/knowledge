@@ -1,18 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getServerAuthState } from "../lib/auth-session";
 
 export const prerender = false;
 
-const authState = await getServerAuthState(Astro.request.headers, Astro.response.headers);
-
-if (authState.status === "forbidden") return Astro.redirect("/access-denied?reason=not_guild_member", 302);
-if (authState.status === "auth_error") return Astro.redirect(`/access-denied?reason=${authState.reason}`, 302);
-if (authState.status === "needs_recheck")
-  return Astro.redirect(
-    `/sign-in?mode=recheck&callbackURL=${encodeURIComponent(`${Astro.url.pathname}${Astro.url.search}`)}`,
-    302
-  );
+const { auth } = Astro.locals;
+const user = auth.status === "allowed" ? auth.user : null;
 ---
 
 <Layout
@@ -30,32 +22,21 @@ if (authState.status === "needs_recheck")
 
     <div class="rounded-lg bg-white lg:border lg:border-neutral-300/60 lg:px-10 lg:py-8 lg:shadow-md">
       {
-        authState.status === "allowed" ? (
+        user && (
           <>
             <p class="mb-2 text-xs font-extrabold text-blue-600 uppercase">Signed in as</p>
             <div class="flex items-center gap-3">
-              {authState.user.imageUrl && (
+              {user.imageUrl && (
                 <img
-                  alt={authState.user.name ? `${authState.user.name}のアイコン` : "ユーザーのアイコン"}
+                  alt={user.name ? `${user.name}のアイコン` : "ユーザーのアイコン"}
                   class="flex-none rounded-lg"
                   height="48"
-                  src={authState.user.imageUrl}
+                  src={user.imageUrl}
                   width="48"
                 />
               )}
-              <p>{authState.user.name}</p>
+              <p>{user.name}</p>
             </div>
-          </>
-        ) : (
-          <>
-            <p class="text-xs font-extrabold text-blue-600 uppercase">Signed out</p>
-            <p class="mt-0.5 lg:mt-2">アクセスするにはサインインが必要です。</p>
-            <a
-              class="mt-2 inline-flex items-center justify-center rounded-xl bg-[#5865F2] px-6 py-3 font-bold text-white lg:mt-4"
-              href="/sign-in"
-            >
-              Sign in with Discord
-            </a>
           </>
         )
       }
