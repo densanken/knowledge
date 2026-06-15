@@ -1,6 +1,9 @@
 pre-commit:
   parallel: true
   commands:
+    test:
+      glob: "*.{test,spec}.{ts,tsx}"
+      run: pnpm vitest run {staged_files}
     lint:
       glob: "*.{ts,tsx,astro}"
       run: pnpm eslint --fix {staged_files}
