@@ -64,7 +64,7 @@ const getSetCookieHeaders = (headers: Headers) => {
   return setCookie ? splitSetCookieHeader(setCookie) : [];
 };
 
-const appendSetCookieHeaders = (source: Headers, target: Headers) => {
+export const appendSetCookieHeaders = (source: Headers, target: Headers) => {
   for (const setCookie of getSetCookieHeaders(source)) {
     target.append("set-cookie", setCookie);
   }

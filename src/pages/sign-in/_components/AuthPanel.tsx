@@ -17,10 +17,17 @@ const authErrorMessages: Record<string, string> = {
 } as const;
 
 const getSafeCallbackURL = (callbackURL: null | string) => {
-  if (!callbackURL?.startsWith("/")) return "/";
-  if (callbackURL.startsWith("//")) return "/";
+  if (!callbackURL) return "/";
 
-  return callbackURL;
+  try {
+    // 同一オリジンの相対パスだけを許可し、open redirect を防ぐ
+    const url = new URL(callbackURL, window.location.origin);
+    if (url.origin !== window.location.origin) return "/";
+
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return "/";
+  }
 };
 
 export const AuthPanel = ({ authError, callbackURL, mode }: Props) => {
