@@ -6,3 +6,6 @@ allowBuilds:
   sharp: false
   unrs-resolver: false
   workerd: true
+minimumReleaseAgeExclude:
+  # Renovate security update: pnpm@11.8.0
+  - pnpm@11.8.0
