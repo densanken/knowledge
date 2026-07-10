@@ -10,7 +10,7 @@ import prettier from "eslint-config-prettier";
 /** @type {import("eslint").Linter.Config[]} */
 export default [
   {
-    ignores: ["node_modules/", "dist/", ".astro/", "eslint.config.mjs"],
+    ignores: ["node_modules/", "dist/", ".astro/", "internal-docs/", "eslint.config.mjs"],
   },
   eslint.configs.recommended,
   ...pluginAstro.configs.recommended,

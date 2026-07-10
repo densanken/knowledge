@@ -8,6 +8,9 @@ CCS のドキュメントサイトのリポジトリです。
 # pnpm セットアップ
 corepack enable
 
+# submodule 取得
+git submodule update --init --recursive
+
 # 依存関係インストール
 pnpm i
 
