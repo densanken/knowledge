@@ -1,3 +1,4 @@
+import { APIError, createAuthMiddleware } from "better-auth/api";
 import { genericOAuth } from "better-auth/plugins/generic-oauth";
 
 import { createDiscordOAuthProvider } from "./discord-oauth";
@@ -45,46 +46,59 @@ export const createAuthOptions = ({
       },
       expiresIn: AUTH_SESSION_MAX_AGE,
     },
+    // OAuth プロファイルの追加フィールドは input を true にしないとユーザーと JWE へ保存されない
+    // input を true にすると公開 API からも更新可能になるため update-user を全面拒否する
+    hooks: {
+      before: createAuthMiddleware((context) => {
+        if (context.path !== "/update-user") return Promise.resolve();
+
+        return Promise.reject(
+          new APIError("FORBIDDEN", {
+            message: "User profile updates are disabled.",
+          })
+        );
+      }),
+    },
     user: {
       additionalFields: {
         imageUrl: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "string",
         },
         provider: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "string",
         },
         providerAccountId: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "string",
         },
         providerUsername: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "string",
         },
         guildAllowed: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "boolean",
         },
         guildCheckedAt: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "number",
         },
         guildCheckStatus: {
-          input: false,
+          input: true,
           required: false,
           returned: true,
           type: "string",
