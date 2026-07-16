@@ -41,6 +41,17 @@ export default defineConfig({
     validateSecrets: true,
   },
   vite: {
+    optimizeDeps: {
+      include: [
+        "astro/env/runtime",
+        "better-auth",
+        "better-auth/api",
+        "better-auth/client/plugins",
+        "better-auth/cookies",
+        "better-auth/plugins/generic-oauth",
+        "better-auth/react",
+      ],
+    },
     plugins: [tailwindcss()],
   },
 });
