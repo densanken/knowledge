@@ -1,0 +1,28 @@
+---
+import { getCollection, render } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("test");
+
+  return posts.map((post) => {
+    return {
+      params: { id: post.id },
+      props: { post },
+    };
+  });
+}
+
+const { id } = Astro.params;
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+export const prerender = true;
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title=`CCS Internal Docs | ${post.data.title}` `>
+  <h1>{post.data.title}</h1>
+  {post.data.description && <h2>{post.data.description}</h2>}
+  <Content />
+</Layout>

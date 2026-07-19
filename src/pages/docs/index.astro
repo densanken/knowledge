@@ -1,33 +1,18 @@
 ---
+import { getCollection } from "astro:content";
+
 import Layout from "../../layouts/Layout.astro";
 
-import type { MarkdownInstance } from "astro";
-
-interface Frontmatter {
-  title: string;
-  description?: string;
-}
-
-const matchesDocs: Record<string, any> = import.meta.glob<MarkdownInstance<Frontmatter>>(
-  "../../../internal-docs/docs/**/*.md",
-  { eager: true }
-);
-const posts: MarkdownInstance<Frontmatter>[] = Object.values(matchesDocs);
+const tests = await getCollection("test");
 ---
 
 <Layout class="container m-auto px-6 md:w-[80%]" title="CCS Internal Docs | Docs Test">
   <div>
     {
-      posts.map((post) => {
+      tests.map((test) => {
         return (
           <div>
-            <div>{post.frontmatter.title}</div>
-
-            {post.frontmatter.description && <div>{post.frontmatter.description}</div>}
-
-            <div>
-              <post.Content />
-            </div>
+            <a href={`/docs/${test.id}`}>{test.data.title}</a>
           </div>
         );
       })
