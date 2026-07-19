@@ -14,14 +14,14 @@ export async function getStaticPaths() {
   });
 }
 
-const { id } = Astro.params;
+// const { id } = Astro.params;
 const { post } = Astro.props;
 const { Content } = await render(post);
 
 export const prerender = true;
 ---
 
-<Layout class="container m-auto px-6 md:w-[80%]" title=`CCS Internal Docs | ${post.data.title}` `>
+<Layout class="container m-auto px-6 md:w-[80%]" title=`CCS Internal Docs | ${post.data.title}`>
   <h1>{post.data.title}</h1>
   {post.data.description && <h2>{post.data.description}</h2>}
   <Content />
