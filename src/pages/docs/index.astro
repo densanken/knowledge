@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+const tests = await getCollection("test");
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title="CCS Internal Docs | Docs Test">
+  <div>
+    {
+      tests.map((test) => {
+        return (
+          <div>
+            <a href={`/docs/${test.id}`}>{test.data.title}</a>
+          </div>
+        );
+      })
+    }
+  </div>
+</Layout>
