@@ -23,7 +23,7 @@ export const prerender = true;
 <Layout class="container m-auto px-6 md:w-[80%]" title=`CCS Internal Docs | ${post.data.title}`>
   <div class="prose max-w-none">
     <h1>{post.data.title}</h1>
-    {post.data.description && <h2>{post.data.description}</h2>}
+    {post.data.description && <p>{post.data.description}</p>}
     <Content />
   </div>
 </Layout>
