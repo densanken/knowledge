@@ -7,15 +7,19 @@ const tests = await getCollection("test");
 ---
 
 <Layout class="container m-auto px-6 md:w-[80%]" title="CCS Internal Docs | Docs Test">
-  <div>
+  <h1>記事一覧（ページタイトルがここに入る）</h1>
+  <ul>
     {
       tests.map((test) => {
         return (
-          <div>
-            <a href={`/docs/${test.id}`}>{test.data.title}</a>
-          </div>
+          <li>
+            <h2>
+              <a href={`/docs/${test.id}`}>{test.data.title}</a>
+            </h2>
+            {test.data.description && <p>{test.data.description}</p>}
+          </li>
         );
       })
     }
-  </div>
+  </ul>
 </Layout>
