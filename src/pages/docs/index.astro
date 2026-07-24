@@ -4,19 +4,20 @@ import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
 const docs = await getCollection("docs");
+
+// 重複の無いカテゴリ名を抽出
+// TODO: カテゴリ名 = ネスト込みのディレクトリ名になっていることの確認
+const categories = [...new Set(docs.map((doc) => doc.id.split("/").slice(0, -1).join("/")))];
 ---
 
 <Layout class="container m-auto px-6 md:w-[80%]" title="ドキュメント一覧">
   <h1>ドキュメント一覧</h1>
   <ul>
     {
-      docs.map((doc) => {
+      categories.map((category) => {
         return (
           <li>
-            <a href={`/docs/${doc.id}`}>
-              {doc.data.title}
-              {doc.data.description && <p>{doc.data.description}</p>}
-            </a>
+            <a href={`docs/${category}`}>{category}</a>
           </li>
         );
       })

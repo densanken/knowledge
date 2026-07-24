@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+
+  // 重複の無いカテゴリ名を抽出
+  // TODO: カテゴリ名 = ネスト込みのディレクトリ名になっていることの確認
+  const categories = [...new Set(docs.map((doc) => doc.id.split("/").slice(0, -1).join("/")))];
+
+  return categories.map((category) => {
+    // カテゴリ名と一致するファイルを取り出し
+    const extractedDocs = docs.filter((doc) => doc.id.split("/").slice(0, -1).join("/") === category);
+    return {
+      params: { slug: category },
+      props: { category, docs: extractedDocs },
+    };
+  });
+}
+
+const { category, docs } = Astro.props;
+
+export const prerender = true;
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title={category}>
+  <h1>{category} ドキュメント一覧</h1>
+  <ul>
+    {
+      docs.map((doc) => {
+        return (
+          <li>
+            <a href={`/docs/${doc.id}`}>
+              {doc.data.title}
+              {doc.data.description && <p>{doc.data.description}</p>}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Layout>
