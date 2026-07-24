@@ -3,19 +3,19 @@ import { getCollection } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
 
-const posts = await getCollection("allPosts");
+const docs = await getCollection("docs");
 ---
 
-<Layout class="container m-auto px-6 md:w-[80%]" title="CCS Internal Docs | Docs Index">
-  <h1>記事一覧</h1>
+<Layout class="container m-auto px-6 md:w-[80%]" title="ドキュメント一覧">
+  <h1>ドキュメント一覧</h1>
   <ul>
     {
-      posts.map((post) => {
+      docs.map((doc) => {
         return (
           <li>
-            <a href={`/docs/${post.id}`}>
-              {post.data.title}
-              {post.data.description && <p>{post.data.description}</p>}
+            <a href={`/docs/${doc.id}`}>
+              {doc.data.title}
+              {doc.data.description && <p>{doc.data.description}</p>}
             </a>
           </li>
         );
