@@ -9,6 +9,13 @@ export const basicDocsSchema = z
   })
   .strict();
 
+export const metaDataSchema = z
+  .object({
+    categoryName: z.string(),
+  })
+  .strict();
+
+// 一応アンダースコア始まりのファイルはフィルターから外れる仕様になっています。
 const docs = defineCollection({
   loader: glob({
     pattern: "**/[^_]*.{md,mdx}",
@@ -17,6 +24,15 @@ const docs = defineCollection({
   schema: basicDocsSchema,
 });
 
+const metaData = defineCollection({
+  loader: glob({
+    pattern: "**/meta.json",
+    base: "./internal-docs/docs",
+  }),
+  schema: metaDataSchema,
+});
+
 export const collections = {
   docs,
+  metaData,
 };

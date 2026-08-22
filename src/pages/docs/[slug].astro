@@ -1,21 +1,22 @@
 ---
+// ------------------------------------
+// 目次用のファイル
+// ------------------------------------
 import { getCollection } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
+  const metaDatas = await getCollection("metaData");
   const docs = await getCollection("docs");
 
   // 重複の無いカテゴリ名を抽出
-  // TODO: カテゴリ名 = ネスト込みのディレクトリ名になっていることの確認
-  const categories = [...new Set(docs.map((doc) => doc.id.split("/").slice(0, -1).join("/")))];
-
-  return categories.map((category) => {
-    // カテゴリ名と一致するファイルを取り出し
-    const extractedDocs = docs.filter((doc) => doc.id.split("/").slice(0, -1).join("/") === category);
+  return metaDatas.map((metaData) => {
+    const dirPath = metaData.id.split("/").slice(0, -1).join("/");
+    const extractedDocs = docs.filter((doc) => doc.id.startsWith(dirPath));
     return {
-      params: { slug: category },
-      props: { category, docs: extractedDocs },
+      params: { slug: dirPath },
+      props: { category: metaData.data.categoryName, docs: extractedDocs },
     };
   });
 }

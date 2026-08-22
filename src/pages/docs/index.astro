@@ -3,21 +3,31 @@ import { getCollection } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
 
-const docs = await getCollection("docs");
+const metaDatas = await getCollection("metaData");
 
-// 重複の無いカテゴリ名を抽出
-// TODO: カテゴリ名 = ネスト込みのディレクトリ名になっていることの確認
-const categories = [...new Set(docs.map((doc) => doc.id.split("/").slice(0, -1).join("/")))];
+interface CategoryEntry {
+  path: String;
+  categoryName: String;
+}
+
+const entries: Array<CategoryEntry> = [];
+
+metaDatas.map((metaData) => {
+  entries.push({
+    path: metaData.id.split("/").slice(0, -1).join("/"),
+    categoryName: metaData.data.categoryName,
+  });
+});
 ---
 
-<Layout class="container m-auto px-6 md:w-[80%]" title="ドキュメント一覧">
-  <h1>ドキュメント一覧</h1>
+<Layout class="container m-auto px-6 md:w-[80%]" title="カテゴリー一覧">
+  <h1>カテゴリー一覧</h1>
   <ul>
     {
-      categories.map((category) => {
+      entries.map((entry) => {
         return (
           <li>
-            <a href={`docs/${category}`}>{category}</a>
+            <a href={`docs/${entry.path}`}>{entry.categoryName}</a>
           </li>
         );
       })
