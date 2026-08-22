@@ -13,7 +13,7 @@ export async function getStaticPaths() {
   // 重複の無いカテゴリ名を抽出
   return metaDatas.map((metaData) => {
     const dirPath = metaData.id.split("/").slice(0, -1).join("/");
-    const extractedDocs = docs.filter((doc) => doc.id.startsWith(dirPath));
+    const extractedDocs = docs.filter((doc) => doc.id.startsWith(`${dirPath}/`));
     return {
       params: { slug: dirPath },
       props: { category: metaData.data.categoryName, docs: extractedDocs },
