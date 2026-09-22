@@ -188,7 +188,6 @@ const getKnownDiscordOAuthUserInfo = (value: unknown): DiscordOAuthProfile => {
 };
 
 const mapDiscordProfileToUser = ((profile) => ({
-  id: profile.id,
   name: profile.name,
   email: profile.email ?? undefined,
   emailVerified: profile.emailVerified,

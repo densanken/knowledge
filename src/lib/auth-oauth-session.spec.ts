@@ -70,8 +70,8 @@ describe("Discord OAuth session", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     const signInResponse = await auth.handler(
-      new Request(`${BASE_URL}/sign-in/oauth2`, {
-        body: JSON.stringify({ callbackURL: "https://example.com/", providerId: "discord" }),
+      new Request(`${BASE_URL}/sign-in/social`, {
+        body: JSON.stringify({ callbackURL: "https://example.com/", provider: "discord" }),
         headers: { "content-type": "application/json", origin: "https://example.com" },
         method: "POST",
       })
@@ -86,7 +86,7 @@ describe("Discord OAuth session", () => {
     expect(state).toBeTruthy();
 
     const callbackResponse = await auth.handler(
-      new Request(`${BASE_URL}/oauth2/callback/discord?code=test-code&state=${encodeURIComponent(state ?? "")}`, {
+      new Request(`${BASE_URL}/callback/discord?code=test-code&state=${encodeURIComponent(state ?? "")}`, {
         headers: { cookie: toCookieHeader(getSetCookies(signInResponse)) },
       })
     );
