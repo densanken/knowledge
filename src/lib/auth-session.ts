@@ -57,8 +57,8 @@ const toPublicUser = (sessionData: AuthSessionData): PublicAuthUser => {
 };
 
 const getSetCookieHeaders = (headers: Headers) => {
-  const getSetCookie = (headers as HeadersWithSetCookie).getSetCookie;
-  if (typeof getSetCookie === "function") return getSetCookie.call(headers);
+  const headersWithSetCookie = headers as HeadersWithSetCookie;
+  if (typeof headersWithSetCookie.getSetCookie === "function") return headersWithSetCookie.getSetCookie();
 
   const setCookie = headers.get("set-cookie");
   return setCookie ? splitSetCookieHeader(setCookie) : [];
