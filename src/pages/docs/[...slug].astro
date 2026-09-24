@@ -1,0 +1,32 @@
+---
+// ------------------------------------
+// ドキュメント本体を表示する用のファイル
+// ------------------------------------
+import { getCollection, render } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
+
+  return docs.map((doc) => {
+    return {
+      params: { slug: doc.id },
+      props: { doc },
+    };
+  });
+}
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+export const prerender = true;
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title={doc.data.title}>
+  <h1>{doc.data.title}</h1>
+  {doc.data.description && <p>{doc.data.description}</p>}
+  <article headingoffset="1" class="prose max-w-none">
+    <Content />
+  </article>
+</Layout>
