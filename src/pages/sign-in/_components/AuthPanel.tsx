@@ -39,10 +39,10 @@ export const AuthPanel = ({ authError, callbackURL, mode }: Props) => {
     startedRef.current = true;
 
     try {
-      const { error } = await authClient.signIn.oauth2({
+      const { error } = await authClient.signIn.social({
         callbackURL: getSafeCallbackURL(callbackURL),
         errorCallbackURL: "/api/auth/error",
-        providerId: isRecheck ? "discord_recheck" : "discord",
+        provider: isRecheck ? "discord_recheck" : "discord",
       });
 
       if (error) window.location.replace("/api/auth/error?error=redirect_failed");
