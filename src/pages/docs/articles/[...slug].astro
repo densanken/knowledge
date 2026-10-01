@@ -2,30 +2,24 @@
 // ------------------------------------
 // ドキュメント本体を表示する用のファイル
 // ------------------------------------
-import { getCollection, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 
 import Layout from "../../../layouts/Layout.astro";
 
-export async function getStaticPaths() {
-  const docs = await getCollection("docs");
+const { slug } = Astro.params;
 
-  return docs.map((doc) => {
-    return {
-      params: { slug: doc.id },
-      props: { doc },
-    };
-  });
+const article = slug && await getEntry("docs", slug);
+
+if (!article) {
+  return new Response(null, { status: 404 });
 }
 
-const { doc } = Astro.props;
-const { Content } = await render(doc);
-
-export const prerender = true;
+const { Content } = await render(article);
 ---
 
-<Layout class="container m-auto px-6 md:w-[80%]" title={doc.data.title}>
-  <h1>{doc.data.title}</h1>
-  {doc.data.description && <p>{doc.data.description}</p>}
+<Layout class="container m-auto px-6 md:w-[80%]" title={article.data.title}>
+  <h1>{article.data.title}</h1>
+  {article.data.description && <p>{article.data.description}</p>}
   <article headingoffset="1" class="prose max-w-none">
     <Content />
   </article>
