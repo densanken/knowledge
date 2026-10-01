@@ -1,55 +1,32 @@
 ---
 // ------------------------------------
-// 目次・記事統合版ファイル
+// ドキュメント本体を表示する用のファイル
 // ------------------------------------
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
 
-const { slug } = Astro.params;
+export async function getStaticPaths() {
+  const docs = await getCollection("docs");
 
-const metaData = await getEntry("metaData", `${slug}/meta`);
-
-let article;
-let Content;
-let filteredDocs = [];
-
-if (metaData) {
-  filteredDocs = await getCollection("docs", ({ id }) => id.startsWith(`${slug}/`));
-} else {
-  article = await getEntry("docs", slug);
-
-  if (article) {
-    const rendered = await render(article);
-    Content = rendered.Content;
-  }
+  return docs.map((doc) => {
+    return {
+      params: { slug: doc.id },
+      props: { doc },
+    };
+  });
 }
+
+const { doc } = Astro.props;
+const { Content } = await render(doc);
+
+export const prerender = true;
 ---
 
-{
-  metaData ? (
-    <Layout class="container m-auto px-6 md:w-[80%]" title={metaData.data.categoryName}>
-      <h1>{metaData.data.categoryName} ドキュメント一覧</h1>
-      <ul>
-        {filteredDocs.map((doc) => {
-          return (
-            <li>
-              <a href={`/docs/${doc.id}`}>
-                {doc.data.title}
-                {doc.data.description && <p>{doc.data.description}</p>}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </Layout>
-  ) : (
-    <Layout class="container m-auto px-6 md:w-[80%]" title={article.data.title}>
-      <h1>{article.data.title}</h1>
-      {article.data.description && <p>{article.data.description}</p>}
-      <article headingoffset="1" class="prose max-w-none">
-        <Content />
-      </article>
-    </Layout>
-  )
-}
+<Layout class="container m-auto px-6 md:w-[80%]" title={doc.data.title}>
+  <h1>{doc.data.title}</h1>
+  {doc.data.description && <p>{doc.data.description}</p>}
+  <article headingoffset="1" class="prose max-w-none">
+    <Content />
+  </article>
+</Layout>
