@@ -8,7 +8,7 @@ import Layout from "../../../layouts/Layout.astro";
 
 const { slug } = Astro.params;
 
-const article = slug && await getEntry("docs", slug);
+const article = slug && (await getEntry("docs", slug));
 
 if (!article) {
   return new Response(null, { status: 404 });

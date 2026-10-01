@@ -15,7 +15,6 @@ if (!metaData) {
 }
 
 const docs = await getCollection("docs", ({ id }) => id.startsWith(`${slug}/`));
-
 ---
 
 <Layout class="container m-auto px-6 md:w-[80%]" title={metaData.data.categoryName}>
