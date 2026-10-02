@@ -4,7 +4,7 @@
 // ------------------------------------
 import { getCollection, getEntry } from "astro:content";
 
-import Layout from "../../../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
 const { slug } = Astro.params;
 
@@ -24,7 +24,7 @@ const docs = await getCollection("docs", ({ id }) => id.startsWith(`${slug}/`));
       docs.map((doc) => {
         return (
           <li>
-            <a href={`/docs/articles/${doc.id}`}>
+            <a href={`/docs/${doc.id}`}>
               {doc.data.title}
               {doc.data.description && <p>{doc.data.description}</p>}
             </a>
