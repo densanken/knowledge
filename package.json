@@ -16,7 +16,7 @@
     "generate-types": "wrangler types",
     "postinstall": "pnpm run generate-types"
   },
-  "packageManager": "pnpm@11.11.0+sha512.4463f65fd80ed80d69bc1d4bf163ee94f605c7380fc318bb5b2ebe15f8cd12d49c51a4d59e951b401e764d3b6ca751cbf51bc50ed7001a6bcb4935e684c34882",
+  "packageManager": "pnpm@11.28.3+sha512.d49760a13b1755948775a5d4cb1bc4ba871ff2dc941adf851630d044ed722f9b5be8be57bef93166098c80c706bd612c282d05526dd1d0ae660188c086820f35",
   "dependencies": {
     "@astrojs/cloudflare": "^14.0.0",
     "@astrojs/react": "^7.0.0",
