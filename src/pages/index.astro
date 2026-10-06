@@ -11,9 +11,7 @@ const user = auth.status === "allowed" ? auth.user : null;
   class="mx-auto mt-10 flex w-full max-w-5xl items-start md:mt-0 md:mb-10 md:items-center lg:mb-[15%]"
   title="CCS Internal Docs | knowledge"
 >
-  <div
-    class="flex w-full flex-col items-start gap-x-6 gap-y-8 px-5 md:px-10 lg:flex-row lg:items-center lg:justify-between"
-  >
+  <div class="flex w-full flex-col items-start gap-x-6 gap-y-8 px-5 md:px-10 lg:flex-row lg:items-center lg:justify-between">
     <div>
       <span class="text-xs font-extrabold text-blue-600 uppercase">knowledge</span>
       <h1 class="text-4xl font-bold sm:text-6xl lg:mt-2">CCS Internal Docs</h1>
@@ -21,25 +19,23 @@ const user = auth.status === "allowed" ? auth.user : null;
     </div>
 
     <div class="rounded-lg bg-white lg:border lg:border-neutral-300/60 lg:px-10 lg:py-8 lg:shadow-md">
-      {
-        user && (
-          <>
-            <p class="mb-2 text-xs font-extrabold text-blue-600 uppercase">Signed in as</p>
-            <div class="flex items-center gap-3">
-              {user.imageUrl && (
-                <img
-                  alt={user.name ? `${user.name}のアイコン` : "ユーザーのアイコン"}
-                  class="flex-none rounded-lg"
-                  height="48"
-                  src={user.imageUrl}
-                  width="48"
-                />
-              )}
-              <p>{user.name}</p>
-            </div>
-          </>
-        )
-      }
+      {user && (
+        <>
+          <p class="mb-2 text-xs font-extrabold text-blue-600 uppercase">Signed in as</p>
+          <div class="flex items-center gap-3">
+            {user.imageUrl && (
+              <img
+                alt={user.name ? `${user.name}のアイコン` : "ユーザーのアイコン"}
+                class="flex-none rounded-lg"
+                height="48"
+                src={user.imageUrl}
+                width="48"
+              />
+            )}
+            <p>{user.name}</p>
+          </div>
+        </>
+      )}
     </div>
   </div>
 </Layout>
