@@ -10,6 +10,11 @@ const { slug } = Astro.params;
 
 const metaData = await getEntry("metaData", `${slug}/meta`);
 
+const categories = await getEntry("categories", "misc");
+
+// テスト用、後で外す！
+console.log(categories);
+
 if (!metaData) {
   return new Response(null, { status: 404 });
 }
