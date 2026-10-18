@@ -171,7 +171,7 @@ importers:
         version: 14.3.4(astro@7.3.8(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))(esbuild@0.28.2)(jiti@2.7.0)(wrangler@4.151.0)(yaml@2.9.1)
       '@astrojs/react':
         specifier: ^7.0.0
-        version: 7.0.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(yaml@2.9.1)
+        version: 7.0.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(yaml@2.9.1)
       '@tailwindcss/vite':
         specifier: ^4.3.0
         version: 4.3.3(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -180,13 +180,13 @@ importers:
         version: 7.3.8(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
       better-auth:
         specifier: ^1.6.3
-        version: 1.7.8(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.4(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))
+        version: 1.7.8(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(vitest@5.0.4(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))
       react:
         specifier: ^19.0.0
-        version: 19.3.0
+        version: 19.3.1
       react-dom:
         specifier: ^19.0.0
-        version: 19.3.0(react@19.3.0)
+        version: 19.3.1(react@19.3.1)
       tailwindcss:
         specifier: ^4.3.0
         version: 4.3.3
@@ -3563,16 +3563,16 @@ packages:
   radix3@1.1.2:
     resolution: {integrity: sha512-b484I/7b8rDEdSDKckSSBA8knMpcdsXudlE/LNL639wFoHKwLbEkQFZHWEYwDC0wa0FKUcCY+GAF73Z7wxNVFA==}
 
-  react-dom@19.3.0:
-    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
+  react-dom@19.3.1:
+    resolution: {integrity: sha512-Y0bARz53lhEC1NMCASs0/j+faB/zqt3R8hpvg1e8+61ZVJ4UL0UdC4cBbXfZMcIuhrfgeILTLe+ZeBCavQPtKQ==}
     peerDependencies:
-      react: ^19.3.0
+      react: ^19.3.1
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
-  react@19.3.0:
-    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
+  react@19.3.1:
+    resolution: {integrity: sha512-QNhWdt7nrgVWWQG58QuGsAR3jv3Hbe4mb4vz7w2csnHavciZJgda1CPNaldF6eVxv90ud3jUXpKlHL69gO38yw==}
     engines: {node: '>=0.10.0'}
 
   readdirp@4.1.2:
@@ -4560,15 +4560,15 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/react@7.0.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(yaml@2.9.1)':
+  '@astrojs/react@7.0.1(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(esbuild@0.28.2)(jiti@2.7.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(yaml@2.9.1)':
     dependencies:
       '@astrojs/internal-helpers': 0.12.0
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
       '@vitejs/plugin-react': 6.1.1(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
       devalue: 5.9.4
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
       ultrahtml: 1.7.0
       vite: 8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
     transitivePeerDependencies:
@@ -6050,7 +6050,7 @@ snapshots:
 
   baseline-browser-mapping@2.11.25: {}
 
-  better-auth@1.7.8(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.4(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))):
+  better-auth@1.7.8(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(vitest@5.0.4(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))):
     dependencies:
       '@better-auth/core': 1.7.8(@better-auth/utils@0.5.0)(@better-fetch/fetch@1.3.2)(better-call@1.4.2(zod@4.6.5))(jose@6.2.12)(kysely@0.29.6)(nanostores@1.5.4)
       '@better-auth/drizzle-adapter': 1.7.8(@better-auth/core@1.7.8(@better-auth/utils@0.5.0)(@better-fetch/fetch@1.3.2)(better-call@1.4.2(zod@4.6.5))(jose@6.2.12)(kysely@0.29.6)(nanostores@1.5.4))(@better-auth/utils@0.5.0)
@@ -6070,8 +6070,8 @@ snapshots:
       nanostores: 1.5.4
       zod: 4.6.5
     optionalDependencies:
-      react: 19.3.0
-      react-dom: 19.3.0(react@19.3.0)
+      react: 19.3.1
+      react-dom: 19.3.1(react@19.3.1)
       vitest: 5.0.4(vite@8.3.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -7549,14 +7549,14 @@ snapshots:
 
   radix3@1.1.2: {}
 
-  react-dom@19.3.0(react@19.3.0):
+  react-dom@19.3.1(react@19.3.1):
     dependencies:
-      react: 19.3.0
+      react: 19.3.1
       scheduler: 0.28.0
 
   react-is@16.13.1: {}
 
-  react@19.3.0: {}
+  react@19.3.1: {}
 
   readdirp@4.1.2: {}
 
