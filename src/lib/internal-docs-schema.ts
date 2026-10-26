@@ -16,4 +16,10 @@ export const CategorySchema = z
   })
   .strict();
 
+export const metaDataSchema = z
+  .object({
+    categoryName: z.string(),
+  })
+  .strict();
+
 export type CategoryEntry = z.infer<typeof CategorySchema>;
