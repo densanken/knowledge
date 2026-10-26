@@ -2,7 +2,7 @@ import { glob } from "astro/loaders";
 import { defineCollection } from "astro:content";
 
 import { getCategories } from "./lib/internal-docs-loader";
-import { basicDocsSchema, CategorySchema, metaDataSchema } from "./lib/internal-docs-schema";
+import { basicDocsSchema, categorySchema, metaDataSchema } from "./lib/internal-docs-schema";
 
 const docs = defineCollection({
   loader: glob({
@@ -14,7 +14,7 @@ const docs = defineCollection({
 
 const categories = defineCollection({
   loader: async () => getCategories("./internal-docs/docs"),
-  schema: CategorySchema,
+  schema: categorySchema,
 });
 
 const metaData = defineCollection({
