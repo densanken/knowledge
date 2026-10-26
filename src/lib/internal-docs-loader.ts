@@ -7,7 +7,10 @@ import type { CategoryEntry } from "./internal-docs-schema";
 
 // ディレクトリパスからカテゴリIDを生成する
 function createCategoryId(path: string): string {
-  return path.split("/").map((segment) => githubSlug(segment)).join("/");
+  return path
+    .split("/")
+    .map((segment) => githubSlug(segment))
+    .join("/");
 }
 
 // MarkdownファイルのパスからドキュメントIDを生成する
