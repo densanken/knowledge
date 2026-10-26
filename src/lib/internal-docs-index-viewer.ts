@@ -13,9 +13,7 @@ export interface CategorySummary {
   nestedCategorySummaries: CategorySummary[];
 }
 
-export async function getCategorySummary(
-  category: CollectionEntry<"categories">
-): Promise<CategorySummary> {
+export async function getCategorySummary(category: CollectionEntry<"categories">): Promise<CategorySummary> {
   const docSummaries = await Promise.all(
     category.data.childDocIds.map(async (docId) => {
       const doc = await getEntry("docs", docId);
