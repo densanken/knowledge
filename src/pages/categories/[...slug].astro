@@ -2,40 +2,110 @@
 // ------------------------------------
 // 目次用のファイル
 // ------------------------------------
-import { getCollection, getEntry } from "astro:content";
+import { type CollectionEntry, getEntry } from "astro:content";
 
 import Layout from "../../layouts/Layout.astro";
 
 const { slug } = Astro.params;
 
-const metaData = await getEntry("metaData", `${slug}/meta`);
-
-const categories = await getEntry("categories", "misc");
-
-// テスト用、後で外す！
-console.log(categories);
-
-if (!metaData) {
+if (!slug) {
   return new Response(null, { status: 404 });
 }
 
-const docs = await getCollection("docs", ({ id }) => id.startsWith(`${slug}/`));
+interface DocSummary{
+  id: string;
+  title: CollectionEntry<"docs">["data"]["title"];
+  description: CollectionEntry<"docs">["data"]["description"];
+}
+
+interface CategorySummary{
+  id: string;
+  categoryName: string;
+  docSummaries: DocSummary[];
+  nestedCategorySummaries: CategorySummary[];
+}
+
+async function getCategorySummary(
+  rootCategory: CollectionEntry<"categories">
+): Promise<CategorySummary> {
+  const docSummaries = await Promise.all(
+    rootCategory.data.childDocIds.map(async (docId): Promise<DocSummary>=>{
+      const doc = await getEntry("docs", docId);
+      if (!doc){
+        throw new Error(`Category not found: ${docId}`);
+      }
+
+      return{
+        id: doc.id,
+        title: doc.data.title,
+        description: doc.data.description,
+      }
+    })
+  );
+
+  const nestedCategorySummaries = await Promise.all(
+    rootCategory.data.childCategoryIds.map(async (subCategoryId) => {
+      const subCategory = await getEntry("categories", subCategoryId);
+      if (!subCategory){
+        throw new Error(`Category not found: ${subCategoryId}`);
+      }
+      return await getCategorySummary(subCategory)
+    })
+  );
+
+  return {
+    id: rootCategory.id,
+    categoryName: rootCategory.data.categoryName,
+    docSummaries,
+    nestedCategorySummaries,
+  };
+}
+
+const category = await getEntry("categories", slug);
+
+if (!category) {
+  throw new Response(null, { status: 404 });
+}
+
+const categorySummary = await getCategorySummary(category);
 ---
 
-<Layout class="container m-auto px-6 md:w-[80%]" title={metaData.data.categoryName}>
-  <h1>{metaData.data.categoryName} ドキュメント一覧</h1>
+<Layout class="container m-auto px-6 md:w-[80%]" title={categorySummary.categoryName}>
+  <h1>{categorySummary.categoryName} ドキュメント一覧</h1>
   <ul>
     {
-      docs.map((doc) => {
+      categorySummary.docSummaries.map((docSummary) => {
         return (
           <li>
-            <a href={`/docs/${doc.id}`}>
-              {doc.data.title}
-              {doc.data.description && <p>{doc.data.description}</p>}
+            <a href={`/docs/${docSummary.id}`}>
+              {docSummary.title}
+              {docSummary.description && <p>{docSummary.description}</p>}
             </a>
           </li>
         );
       })
     }
   </ul>
+
+  {
+    categorySummary.nestedCategorySummaries.map((subCategorySummary) => {
+      return (
+        <h2>{subCategorySummary.categoryName} ドキュメント一覧</h2>
+        <ul>
+          {
+            subCategorySummary.docSummaries.map((docSummary) => {
+              return (
+                <li>
+                  <a href={`/docs/${docSummary.id}`}>
+                    {docSummary.title}
+                    {docSummary.description && <p>{docSummary.description}</p>}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      );
+    })
+  }
 </Layout>
