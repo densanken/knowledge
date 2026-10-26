@@ -7,7 +7,7 @@ export const basicDocsSchema = z
   })
   .strict();
 
-export const CategorySchema = z
+export const categorySchema = z
   .object({
     id: z.string(),
     categoryName: z.string(),
@@ -22,4 +22,6 @@ export const metaDataSchema = z
   })
   .strict();
 
-export type CategoryEntry = z.infer<typeof CategorySchema>;
+export type CategoryEntry = z.infer<typeof categorySchema>;
+
+export type MetaDataEntry = z.infer<typeof metaDataSchema>;
