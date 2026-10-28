@@ -3,10 +3,12 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, envField } from "astro/config";
 
+import { pagefindIntegration } from "./src/integrations/pagefind";
+
 // https://astro.build/config
 export default defineConfig({
   output: "server",
-  integrations: [react()],
+  integrations: [react(), pagefindIntegration()],
   adapter: cloudflare(),
   env: {
     schema: {

@@ -1,0 +1,70 @@
+---
+// ------------------------------------
+// Pagefind の検索インデックス生成専用ページ
+// ビルド時のみ prerender され、インデックス生成後にビルド成果物から削除される
+// ------------------------------------
+import { getCollection } from "astro:content";
+
+import { PAGEFIND_TAG_FILTER } from "../../../lib/search";
+
+import type { GetStaticPaths } from "astro";
+
+export const prerender = true;
+
+export const getStaticPaths = (async () => {
+  // "a/b/c.md" -> "a/b", "c.md" -> ""
+  const getDirname = (path: string) => path.slice(0, Math.max(path.lastIndexOf("/"), 0));
+
+  const [docs, metaData] = await Promise.all([getCollection("docs"), getCollection("metaData")]);
+
+  // meta.json のあるディレクトリ -> カテゴリ名
+  const categoryNames = new Map(
+    metaData.flatMap((entry) =>
+      entry.filePath ? [[getDirname(entry.filePath), entry.data.categoryName] as const] : []
+    )
+  );
+
+  // ドキュメントが属するカテゴリを上位から順にタグとして扱う
+  const getTags = (filePath: string | undefined) => {
+    const tags: string[] = [];
+    if (!filePath) return tags;
+
+    for (let dir = getDirname(filePath); dir; dir = getDirname(dir)) {
+      const name = categoryNames.get(dir);
+      if (name) tags.unshift(name);
+    }
+
+    return tags;
+  };
+
+  return docs.map((doc) => ({
+    params: { slug: doc.id },
+    props: { doc, tags: getTags(doc.filePath) },
+  }));
+}) satisfies GetStaticPaths;
+
+const { doc, tags } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{doc.data.title}</title>
+  </head>
+  <body>
+    <main data-pagefind-body>
+      <h1 data-pagefind-meta="title">{doc.data.title}</h1>
+      {doc.data.description && <p data-pagefind-meta="description">{doc.data.description}</p>}
+      <ul>
+        {tags.map((tag) => (
+          <li data-pagefind-filter={PAGEFIND_TAG_FILTER}>{tag}</li>
+        ))}
+      </ul>
+      {
+        // 画像などのアセットを公開ディレクトリへ出力しないよう、render() ではなく変換済みの HTML を使う
+        doc.rendered ? <article set:html={doc.rendered.html} /> : <article>{doc.body}</article>
+      }
+    </main>
+  </body>
+</html>
