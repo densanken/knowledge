@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { slug as githubSlug } from "github-slugger";
 
-import type { CategoryEntry, MetaDataEntry } from "./internal-docs-schema";
+import { type CategoryEntry, metaDataSchema } from "./internal-docs-schema";
 
 // カテゴリの階層からカテゴリIDを生成する
 function createCategoryId(segments: string[]): string {
@@ -43,7 +43,9 @@ export async function getCategories(directoryPath: string, categorySegments: str
 
   const id = createCategoryId(categorySegments);
 
-  const meta = JSON.parse(await readFile(join(directoryPath, "meta.json"), { encoding: "utf8" })) as MetaDataEntry;
+  const meta = metaDataSchema.parse(
+    JSON.parse(await readFile(join(directoryPath, "meta.json"), { encoding: "utf8" }))
+  );
 
   // 直下のドキュメントIDを取得する
   const childDocIds = childEntries

@@ -3,10 +3,10 @@
 // 目次用のファイル
 // ------------------------------------
 import { getEntry } from "astro:content";
-import { getCategorySummary } from "../../lib/internal-docs-index-viewer";
+import { getCategorySummary } from "../../lib/internal-docs-catgory-summary";
 
 import Layout from "../../layouts/Layout.astro";
-import CategoryIndex from "./CategoryIndex.astro";
+import CategoryIndex from "./_components/CategoryIndex.astro";
 
 const { slug } = Astro.params;
 

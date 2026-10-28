@@ -23,5 +23,3 @@ export const metaDataSchema = z
   .strict();
 
 export type CategoryEntry = z.infer<typeof categorySchema>;
-
-export type MetaDataEntry = z.infer<typeof metaDataSchema>;
