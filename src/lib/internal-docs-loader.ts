@@ -43,9 +43,7 @@ export async function getCategories(directoryPath: string, categorySegments: str
 
   const id = createCategoryId(categorySegments);
 
-  const meta = metaDataSchema.parse(
-    JSON.parse(await readFile(join(directoryPath, "meta.json"), { encoding: "utf8" }))
-  );
+  const meta = metaDataSchema.parse(JSON.parse(await readFile(join(directoryPath, "meta.json"), { encoding: "utf8" })));
 
   // 直下のドキュメントIDを取得する
   const childDocIds = childEntries
