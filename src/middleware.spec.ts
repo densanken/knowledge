@@ -155,4 +155,28 @@ describe("auth guard middleware", () => {
     expect(context.redirect).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalledTimes(1);
   });
+
+  it("guards the search index behind the auth check", async () => {
+    mockAuthState({ status: "signed_out", user: null });
+    const context = createContext("/pagefind/pagefind.js");
+
+    const response = await run(context);
+
+    expect(context.redirect).toHaveBeenCalledWith("/sign-in?callbackURL=%2Fpagefind%2Fpagefind.js", 302);
+    expect(next).not.toHaveBeenCalled();
+    expect(response.headers.get("cache-control")).toBe("private, no-store");
+  });
+
+  it.each(["/pagefind-source", "/pagefind-source/docs/foo"])(
+    "hides the search index source page %s outside of build-time prerendering",
+    async (path) => {
+      const context = { ...createContext(path), isPrerendered: false };
+
+      const response = await run(context);
+
+      expect(response.status).toBe(404);
+      expect(getServerAuthState).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    }
+  );
 });

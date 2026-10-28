@@ -16,6 +16,22 @@ const user = auth.status === "allowed" ? auth.user : null;
       <span class="text-xs font-extrabold text-blue-600 uppercase">knowledge</span>
       <h1 class="text-4xl font-bold sm:text-6xl lg:mt-2">CCS Internal Docs</h1>
       <p class="mt-2 text-lg lg:mt-4 lg:text-gray-500">CCS のドキュメントサイト</p>
+      <form action="/search" class="mt-6 flex gap-2" method="get" role="search">
+        <label class="sr-only" for="top-search-query">
+          検索キーワード
+        </label>
+        <input
+          class="w-full max-w-sm rounded-lg border border-neutral-300 px-4 py-2 focus:border-blue-600 focus:outline-none"
+          id="top-search-query"
+          name="q"
+          placeholder="ドキュメントを検索"
+          required
+          type="search"
+        />
+        <button class="rounded-lg bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700" type="submit">
+          検索
+        </button>
+      </form>
     </div>
 
     <div class="rounded-lg bg-white lg:border lg:border-neutral-300/60 lg:px-10 lg:py-8 lg:shadow-md">

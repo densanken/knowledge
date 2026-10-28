@@ -1,0 +1,13 @@
+---
+import { SearchPanel } from "./_components/SearchPanel";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = false;
+
+const initialQuery = Astro.url.searchParams.get("q") ?? "";
+---
+
+<Layout class="mx-auto w-full max-w-3xl px-5 py-10 md:px-10" title="検索 | CCS Internal Docs">
+  <h1 class="mb-6 text-3xl font-bold">ドキュメント検索</h1>
+  <SearchPanel initialQuery={initialQuery} client:load />
+</Layout>

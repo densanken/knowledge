@@ -23,6 +23,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^7.0.0",
     "better-auth": "^1.6.3",
+    "pagefind": "^1.5.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.3.0"
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@eslint/js": "^10.0.0",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@typescript-eslint/parser": "^8.3.0",
