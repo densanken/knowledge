@@ -1,4 +1,4 @@
-name: build
+name: ci
 on:
   push:
     branches:
@@ -9,17 +9,33 @@ permissions:
   contents: read
 
 jobs:
-  build:
-    name: build
+  check:
+    name: ${{ matrix.check.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - name: lint
+            script: lint:check
+            submodules: true
+          - name: format
+            script: fmt:check
+            submodules: false
+          - name: build
+            script: build
+            submodules: true
+          - name: test
+            script: test
+            submodules: false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          submodules: true
+          submodules: ${{ matrix.check.submodules }}
           persist-credentials: false
-          # contents:read 権限の fine-grained PAT が必要
-          token: ${{ secrets.SUBMODULE_TOKEN }}
+          # submodule の取得には contents:read 権限の fine-grained PAT が必要
+          token: ${{ matrix.check.submodules && secrets.SUBMODULE_TOKEN || github.token }}
 
       - name: Set up sfw
         uses: socketdev/action@ba6de6cc0565af1f42295590380973573297e31f # v1.3.2
@@ -27,11 +43,13 @@ jobs:
           mode: firewall-free
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
-        # 汚染された package を sfw が検出できるよう pnpm cache は使わない
+        uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
+        with:
+          node-version-file: false
+          install: false
 
       - name: Set up Node.js environment
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           # 汚染された package を sfw が検出できるよう pnpm cache は使わない
@@ -39,8 +57,9 @@ jobs:
       - name: Install dependencies
         run: sfw pnpm install --frozen-lockfile
 
-      - name: Run build check
-        run: pnpm build
+      - name: Run ${{ matrix.check.name }} check
+        run: pnpm run ${{ matrix.check.script }}
+        # build で必要
         env:
           BETTER_AUTH_URL: "http://localhost:4321"
           BETTER_AUTH_SECRET: "s3qHhi1YX7TUQCGEPWKOVz0kJLzvS3w8puXxctKRJ8M=" # for testing, not a real secret
