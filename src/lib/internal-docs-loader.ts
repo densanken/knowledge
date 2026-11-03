@@ -27,14 +27,21 @@ function createDocId(segments: string[]): string {
 export async function getCategories(directoryPath: string, categorySegments: string[] = []): Promise<CategoryEntry[]> {
   const childEntries = await readdir(directoryPath, { withFileTypes: true });
 
+  // ルート以外で meta.json がなければ探索を終了する
+  if (categorySegments.length > 0 && !childEntries.some((entry) => entry.isFile() && entry.name === "meta.json")) {
+    return [];
+  }
+
   const childDirs = childEntries.filter((entry) => entry.isDirectory());
 
   // 下位カテゴリを再帰的に取得する
-  const descendantCategoryEntries = (
-    await Promise.all(
-      childDirs.map((dir) => getCategories(join(directoryPath, dir.name), [...categorySegments, dir.name]))
-    )
-  ).flat();
+  // 後で meta.json 持ちか判断するためにflatにする前のものも保持
+  const childCategoryGroups = await Promise.all(
+    childDirs.map((dir) => getCategories(join(directoryPath, dir.name), [...categorySegments, dir.name]))
+  );
+
+  // 一列に並べる
+  const descendantCategoryEntries = childCategoryGroups.flat();
 
   // ルートディレクトリはカテゴリとして登録しない
   if (categorySegments.length === 0) {
@@ -51,7 +58,7 @@ export async function getCategories(directoryPath: string, categorySegments: str
     .map((entry) => createDocId([...categorySegments, entry.name]));
 
   // 直下のカテゴリIDを取得する
-  const childCategoryIds = childDirs.map((dir) => createCategoryId([...categorySegments, dir.name]));
+  const childCategoryIds = childCategoryGroups.filter((entries) => entries.length > 0).map((entries) => entries[0].id);
 
   return [
     {
