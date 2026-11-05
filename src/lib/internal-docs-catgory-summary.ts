@@ -1,4 +1,6 @@
-import { getEntry, type CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
+
+import type { CollectionEntry } from "astro:content";
 
 export interface DocSummary {
   id: string;
