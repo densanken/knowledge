@@ -3,7 +3,9 @@ import { join } from "node:path";
 
 import { slug as githubSlug } from "github-slugger";
 
-import { type CategoryEntry, metaDataSchema } from "./internal-docs-schema";
+import { metaDataSchema } from "./internal-docs-schema";
+
+import type { CategoryEntry } from "./internal-docs-schema";
 
 // カテゴリの階層からカテゴリIDを生成する
 function createCategoryId(segments: string[]): string {
