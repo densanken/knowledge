@@ -1,0 +1,32 @@
+---
+import type { CategorySummary } from "../../../lib/internal-docs-catgory-summary";
+
+interface Props {
+  categorySummary: CategorySummary;
+  level: number;
+}
+
+const { categorySummary, level } = Astro.props;
+
+const Heading = `h${level}`;
+---
+
+<div>
+  <Heading>{categorySummary.categoryName} ドキュメント一覧</Heading>
+  {categorySummary.docSummaries.length > 0 && (
+    <ul>
+      {categorySummary.docSummaries.map((doc) => (
+        <li>
+          <a href={`/docs/${doc.id}`}>
+            {doc.title}
+            {doc.description && <p>{doc.description}</p>}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {categorySummary.nestedCategorySummaries.map((child) => (
+    <Astro.self categorySummary={child} level={level + 1} />
+  ))}
+</div>

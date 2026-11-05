@@ -1,27 +1,20 @@
 import { glob } from "astro/loaders";
-import { z } from "astro/zod";
 import { defineCollection } from "astro:content";
 
-export const basicDocsSchema = z
-  .object({
-    title: z.string(),
-    description: z.string().optional(),
-  })
-  .strict();
+import { getCategories } from "./lib/internal-docs-loader";
+import { basicDocsSchema, categorySchema, metaDataSchema } from "./lib/internal-docs-schema";
 
-export const metaDataSchema = z
-  .object({
-    categoryName: z.string(),
-  })
-  .strict();
-
-// 一応アンダースコア始まりのファイルはフィルターから外れる仕様になっています。
 const docs = defineCollection({
   loader: glob({
-    pattern: "**/[^_]*.{md,mdx}",
+    pattern: "**/*.{md,mdx}",
     base: "./internal-docs/docs",
   }),
   schema: basicDocsSchema,
+});
+
+const categories = defineCollection({
+  loader: async () => getCategories("./internal-docs/docs"),
+  schema: categorySchema,
 });
 
 const metaData = defineCollection({
@@ -34,5 +27,6 @@ const metaData = defineCollection({
 
 export const collections = {
   docs,
+  categories,
   metaData,
 };
