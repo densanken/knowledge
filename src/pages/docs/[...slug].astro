@@ -1,0 +1,27 @@
+---
+// ------------------------------------
+// ドキュメント本体を表示する用のファイル
+// ------------------------------------
+import { getEntry, render } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+const { slug } = Astro.params;
+
+const article = slug && (await getEntry("docs", slug));
+
+if (!article) {
+  return new Response(null, { status: 404 });
+}
+
+const { Content } = await render(article);
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title={article.data.title}>
+  <h1>{article.data.title}</h1>
+  {article.data.description && <p>{article.data.description}</p>}
+  <!-- eslint-disable-next-line -->
+  <article headingoffset="1" class="prose max-w-none">
+    <Content />
+  </article>
+</Layout>

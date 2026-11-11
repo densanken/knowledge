@@ -1,0 +1,36 @@
+---
+// ------------------------------------
+// 目次用のファイル
+// ------------------------------------
+import { getCollection, getEntry } from "astro:content";
+
+import Layout from "../../layouts/Layout.astro";
+
+const { slug } = Astro.params;
+
+const metaData = await getEntry("metaData", `${slug}/meta`);
+
+if (!metaData) {
+  return new Response(null, { status: 404 });
+}
+
+const docs = await getCollection("docs", ({ id }) => id.startsWith(`${slug}/`));
+---
+
+<Layout class="container m-auto px-6 md:w-[80%]" title={metaData.data.categoryName}>
+  <h1>{metaData.data.categoryName} ドキュメント一覧</h1>
+  <ul>
+    {
+      docs.map((doc) => {
+        return (
+          <li>
+            <a href={`/docs/${doc.id}`}>
+              {doc.data.title}
+              {doc.data.description && <p>{doc.data.description}</p>}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Layout>
