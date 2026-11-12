@@ -1,11 +1,11 @@
 import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
+import stylistic from "@stylistic/eslint-plugin";
+import prettier from "eslint-config-prettier";
 import pluginAstro from "eslint-plugin-astro";
 import pluginJsxA11y from "eslint-plugin-jsx-a11y";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
-import pluginImport from "eslint-plugin-import";
-import prettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
 
 /** @type {import("eslint").Linter.Config[]} */
 export default [
@@ -20,9 +20,20 @@ export default [
   ...tseslint.configs.stylisticTypeChecked.map((config) => ({ ...config, files: ["**/*.{ts,tsx}"] })),
 
   {
+    plugins: { "@stylistic": stylistic },
     rules: {
       "no-console": "warn",
       "prefer-template": "error",
+      "no-duplicate-imports": ["error", { allowSeparateTypeImports: true }],
+      "@stylistic/padding-line-between-statements": [
+        "error",
+        { blankLine: "always", prev: "import", next: "*" },
+        { blankLine: "any", prev: "import", next: "import" },
+      ],
+      "no-restricted-syntax": [
+        "error",
+        { selector: 'ImportSpecifier[importKind="type"]', message: "Use a top-level type import." },
+      ],
     },
   },
   {
@@ -57,35 +68,6 @@ export default [
     settings: {
       react: {
         version: "19",
-      },
-    },
-  },
-  {
-    files: ["**/*.{mjs,ts,tsx,astro}"],
-    plugins: pluginImport.flatConfigs.recommended.plugins,
-    rules: {
-      ...pluginImport.flatConfigs.recommended.rules,
-      ...pluginImport.flatConfigs.typescript.rules,
-      "import/no-unresolved": ["error", { ignore: ["^astro:"] }],
-      "import/consistent-type-specifier-style": "error",
-      "import/newline-after-import": "error",
-      "import/no-duplicates": "error",
-      "import/order": [
-        "error",
-        {
-          alphabetize: {
-            order: "asc",
-          },
-          groups: ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
-          "newlines-between": "always",
-          pathGroupsExcludedImportTypes: ["builtin"],
-        },
-      ],
-    },
-    settings: {
-      "import/resolver": {
-        typescript: true,
-        node: true,
       },
     },
   },

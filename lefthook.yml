@@ -1,13 +1,12 @@
 pre-commit:
-  parallel: true
-  commands:
-    test:
+  jobs:
+    - name: test
       glob: "*.{test,spec}.{ts,tsx}"
       run: pnpm vitest run {staged_files}
-    lint:
+    - name: lint
       glob: "*.{ts,tsx,astro}"
       run: pnpm eslint --fix {staged_files}
       stage_fixed: true
-    format:
-      run: pnpm prettier --write --ignore-unknown {staged_files}
+    - name: format
+      run: pnpm oxfmt --no-error-on-unmatched-pattern {staged_files}
       stage_fixed: true
