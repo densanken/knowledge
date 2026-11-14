@@ -43,7 +43,7 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "lefthook": "^2.0.15",
     "oxfmt": "^0.78.0",
-    "typescript": "^6.0.0",
+    "typescript": "^7.0.0",
     "typescript-eslint": "^8.3.0",
     "vitest": "^5.0.0",
     "wrangler": "^4.82.2"
