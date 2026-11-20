@@ -31,7 +31,7 @@
     "@astrojs/check": "^0.9.8",
     "@astrojs/compiler-rs": "^0.5.2",
     "@eslint/js": "^10.0.0",
-    "@stylistic/eslint-plugin": "^5.10.0",
+    "@stylistic/eslint-plugin": "^6.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@typescript-eslint/parser": "^8.3.0",
